@@ -1,5 +1,8 @@
 pipeline {
     agent { label "test" }
+	environment {
+		DOCKERHUB_CREDS=credentials('dockerHub')
+	}
     stages{
         stage("Clone Code"){
             steps{
@@ -8,15 +11,13 @@ pipeline {
         }
         stage("Build and Test"){
             steps{
-                sh "docker build . -t node-app-test-new"
+                sh "docker build . -t $DOCKERHUB_CREDS_USR/node-app-test-new:latest"
             }
         }
         stage("Push to Docker Hub"){
             steps{
-                withCredentials([usernamePassword(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
-                sh "docker tag node-app-test-new ${env.dockerHubUser}/node-app-test-new:latest"
-                sh "docker login -u ${env.dockerHubUser} -p '$env.dockerHubPass'"
-                sh "docker push ${env.dockerHubUser}/node-app-test-new:latest"
+                sh "docker login -u $DOCKERHUB_CREDS_USR -p '$DOCKERHUB_CREDS_PSW'"
+                sh "docker push $DOCKERHUB_CREDS_USR/node-app-test-new:latest"
                 }
             }
         }
