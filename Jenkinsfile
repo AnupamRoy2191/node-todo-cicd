@@ -29,7 +29,7 @@ pipeline {
     post{
   	always {
     		echo "cleaning up all dangling images"
-		sh "docker rmi $(docker images -f dangling=true)"
+		sh 'docker rmi $(docker images -f dangling=true)'
   }
 }
 }
