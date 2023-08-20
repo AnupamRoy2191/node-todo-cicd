@@ -12,9 +12,6 @@ pipeline {
         stage("Build and Test"){
             steps{
                 sh "docker build . -t $DOCKERHUB_CREDS_USR/node-app-test-new:latest"
-	        skipWhen {
-            		docker.imageExists("$DOCKERHUB_CREDS_USR/node-app-test-new:latest")
-        		}
            	 }
         }
         stage("Push to Docker Hub"){
