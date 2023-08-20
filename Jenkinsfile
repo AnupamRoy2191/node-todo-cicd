@@ -20,7 +20,6 @@ pipeline {
                 sh "docker push $DOCKERHUB_CREDS_USR/node-app-test-new:latest"
                 }
             }
-        }
         stage("Deploy"){
             steps{
                 sh "docker-compose down && docker-compose up -d"
